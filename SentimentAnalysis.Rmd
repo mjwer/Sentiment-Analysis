@@ -1,0 +1,193 @@
+---
+title: "Sentiment Analysis"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+Matthew Werner
+DAT 511
+Bag of Words & Sentiment Analysis
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+
+require(ggplot2)
+
+```
+```{r}
+
+x <- readLines("C:\\Users\\matth\\OneDrive\\Documents\\Grad School\\Data Analytics\\Spring 2022\\DAT511\\Week 10\\dataset-CalheirosMoroRita-2017.csv")
+
+
+```
+
+```{r}
+
+head(x)
+
+```
+
+
+
+
+```{r}
+
+library('corpus')
+
+```
+
+```{r}
+
+require(tm)
+
+```
+
+```{r}
+
+sw_source<-VectorSource(x)
+
+```
+
+```{r}
+
+sw_corpus<-VCorpus(sw_source)
+
+```
+
+
+```{r}
+x<-tolower(x)
+x<-removePunctuation(x)
+x<-removeNumbers(x)
+x<-removeWords(x, stopwords("en"))
+x<-stripWhitespace(x)
+clean_source<-VectorSource(x)
+clean_corpus<-VCorpus(clean_source)
+```
+
+
+```{r}
+dtm<-TermDocumentMatrix(clean_corpus)
+mterms<-as.matrix(dtm)
+v<-sort(rowSums(mterms),decreasing=TRUE)
+d<-data.frame(word=names(v),freq=v)
+head(d,20)
+```
+```{r}
+require('wordcloud')
+wordcloud(words=d$word,freq=d$freq,min.freq=3,max.words=100,rot.per=0.35)
+```
+
+Wordcloud insinuates that the reviews were positive.
+
+
+```{r}
+findAssocs(dtm,terms="hotel",corlimit=0.1)
+```
+
+```{r}
+findAssocs(dtm,terms="staff",corlimit=0.1)
+```
+
+```{r}
+findAssocs(dtm,terms="food",corlimit=0.1)
+```
+
+Hotel, Staff, and Food all are associated with words that describe their respective department.
+
+
+
+```{r}
+require('SentimentAnalysis')
+#sa<-analyzeSentiment(x)
+#sa
+#convertToBinaryResponse(sa)$SentimentQDAP
+```
+
+```{r}
+
+require(SnowballC)
+
+```
+
+```{r}
+require('SentimentAnalysis')
+sa<-analyzeSentiment(x)
+head(sa)
+head(convertToBinaryResponse(sa)$SentimentQDAP)
+```
+
+```{r}
+dict.QDAP<-loadDictionaryQDAP()
+dict.GI<-loadDictionaryGI()
+```
+
+```{r}
+dtemp<-preprocessCorpus(clean_corpus)
+sentiment_direction<-convertToDirection(analyzeSentiment(dtemp)$SentimentQDAP)
+```
+
+```{r}
+for (k in 1:10)
+{
+  print(sentiment_direction[k])
+  cat(x[k],"\n")
+}
+
+```
+
+```{r}
+dtemp<-preprocessCorpus(sw_corpus)
+sw_sa<-analyzeSentiment(dtemp)
+sentiment_direction<-convertToDirection(sw_sa$SentimentQDAP)
+```
+
+```{r}
+str(sw_sa)
+```
+
+```{r}
+for (k in 1:10)
+{
+  print(sentiment_direction[k])
+  print(unlist(sw_corpus[k])["content.content"])
+  cat("\n")
+}
+
+```
+
+```{r}
+table(convertToDirection(sw_sa$SentimentQDAP))
+```
+
+```{r}
+table(convertToDirection(sw_sa$SentimentLM))
+```
+
+```{r}
+unlist(sw_corpus[which.max(sw_sa$SentimentQDAP)])["content.content"]
+```
+
+
+```{r}
+sort((sw_sa$SentimentQDAP),decreasing=F)[1:10]
+
+```
+
+
+
+```{r}
+unlist(sw_corpus[which.min(sw_sa$SentimentQDAP)])["content.content"]
+```
+
+
+
+```{r}
+cor(na.omit(sw_sa[, c("SentimentLM", "SentimentHE", "SentimentQDAP","SentimentGI")]))
+```
+
+The correlation between GI and QDAP is relatively high, which would be expected.
