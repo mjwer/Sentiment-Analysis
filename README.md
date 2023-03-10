@@ -1,4 +1,14 @@
 # Sentiment-Analysis
-Utilized R Programming Language to analyze multiple reviews pertaining to one particular hotel. Obtained not only the overall approval or disapproval of those reviews, but the customer's average underlying sentiment relative to the frequency of key words used throughout the reviews.
+# Objectives
 
-This dataset is from: https://www.researchgate.net/publication/315872294_Sentiment_Classification_of_Consumer_Generated_Online_Reviews_Using_Topic_Modeling
+Find frequency correlations between words that tend to be associated with eachother
+
+**1. Data Cleaning and Preparation.**<br>
+
+**2. Determine the customer's underlying sentiment by:**
+> Analyzing the frequency of key words used throughout the reviews.<br>
+> Finding words that are frequently associated with those key words.<br>
+> Analyzing and comparing these frequencies.  
+
+Dataset Source: <br>
+https://www.researchgate.net/publication/315872294_Sentiment_Classification_of_Consumer_Generated_Online_Reviews_Using_Topic_Modeling
