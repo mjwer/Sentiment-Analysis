@@ -1,8 +1,6 @@
 # Sentiment-Analysis
 # Objectives
 
-Find frequency correlations between words that tend to be associated with eachother
-
 **1. Data Cleaning and Preparation.**<br>
 
 **2. Determine the customer's underlying sentiment by:**
