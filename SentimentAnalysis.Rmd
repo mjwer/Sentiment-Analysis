@@ -86,15 +86,18 @@ Wordcloud insinuates that the reviews were positive.
 
 
 ```{r}
-findAssocs(dtm,terms="hotel",corlimit=0.1)
+h <- findAssocs(dtm,terms="hotel",corlimit=0.1)
+head(h)
 ```
 
 ```{r}
-findAssocs(dtm,terms="staff",corlimit=0.1)
+s <- findAssocs(dtm,terms="staff",corlimit=0.1)
+head(s)
 ```
 
 ```{r}
-findAssocs(dtm,terms="food",corlimit=0.1)
+f <- findAssocs(dtm,terms="food",corlimit=0.1)
+head(f)
 ```
 
 Hotel, Staff, and Food all are associated with words that describe their respective department.
